@@ -1,0 +1,40 @@
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  width="200"
+  height="200"
+  viewBox="0 0 200 200"
+>
+  <!-- Outer Square -->
+  <rect
+    x="10"
+    y="10"
+    width="80"
+    height="80"
+    fill="none"
+    stroke="#6366F1"
+    stroke-width="6"
+    rx="8"
+  />
+  <!-- Middle Square -->
+  <rect
+    x="50"
+    y="50"
+    width="80"
+    height="80"
+    fill="none"
+    stroke="#6366F1"
+    stroke-width="6"
+    rx="8"
+  />
+  <!-- Inner Square -->
+  <rect
+    x="90"
+    y="90"
+    width="80"
+    height="80"
+    fill="none"
+    stroke="#6366F1"
+    stroke-width="6"
+    rx="8"
+  />
+</svg>

@@ -9,9 +9,11 @@ import {
 } from "@/components/ui/select"
 import { Textarea } from '@/components/ui/textarea';
 
-function SelectTopic() {
+function SelectTopic({onUserSelect}) {
   const options=['Custom Prompt','Random AI Story','Scary Story','Historical Story','Bed Time Story','Motivation'];
   const [selectedOption,setSelectedOption]=useState();
+  
+
   return (
     <div>
       <h2 className='font-bold text-2xl text-primary'>
@@ -21,7 +23,7 @@ function SelectTopic() {
     <Select onValueChange={(value)=>
       {
         setSelectedOption(value)
-        value!='Custom Prompt'&&onUserSelect('topic',value)
+        value!='Custom Prompt'&& onUserSelect('topic',value)
       }}>
       <SelectTrigger className="w-full mt-2 p-6 text-lg">
         <SelectValue placeholder="Content Type" />

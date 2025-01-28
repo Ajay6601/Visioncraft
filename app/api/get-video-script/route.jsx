@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import {chatSession} from "@/configs/aimodel";
+import { chatSession } from "@/configs/aimodel";
 
 export async function POST(req) {
     try{

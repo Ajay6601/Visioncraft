@@ -19,8 +19,6 @@ const {
     responseMimeType: "application/json",
   };
   
-  
-
     const chatSession = model.startChat({
       generationConfig,
       history: [
@@ -39,5 +37,6 @@ const {
       ],
     });
   
+    module.exports = { chatSession };
 
   

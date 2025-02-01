@@ -18,6 +18,7 @@ function CreateNew() {
   
   
   const onHandleInputChange=(fieldName,fieldValue)=>{
+    console.log(fieldName,fieldValue)
     setFormData(prev=>({
     ...prev,
     [fieldName]:fieldValue
@@ -52,7 +53,8 @@ function CreateNew() {
     // })
     await axios.post('/api/generate-audio',{
       text:videoScriptData,
-      id:id }).then(resp=>{
+      id:id 
+    }).then(resp=>{
         console.log(resp.data)
       })
       setLoading(false)

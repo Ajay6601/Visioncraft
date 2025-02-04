@@ -10,13 +10,15 @@ import {v4 as uuidv4} from 'uuid';
 
 
 const scriptData="In the dead of night, the hospital's corridors stretched into a realm of forgotten dread. A lone wheelchair stood abandoned, its silent wheels whispering forgotten tales. From the shadows, a pair of feet shuffled forward, their presence disturbing the silence A spectral figure materialized at the end of the hall, its form wavering and chilling. The corridor was silent once more, but the echoes of terror still lingered in the darkness."
+const FILE_URL="https://firebasestorage.googleapis.com/v0/b/visioncraft-b335b.firebasestorage.app/o/visioncraft%2F718ab756-210f-4f8d-ae80-6eb5359b7078.mp3?alt=media&token=686439ca-5788-42a2-ab0e-b3fec3ab2b3c"
 
 function CreateNew() {
   const [formData,setFormData]=useState([]);
   const [loading,setLoading]=useState(false);
   const [videoScript,setVideoScript]=useState();
   const [audioFileUrl,setAudioFileUrl]=useState();
-  
+  const [imageList,setImageList]=useState();
+  const [captions,setCaptions]=useState();
   const onHandleInputChange=(fieldName,fieldValue)=>{
     console.log(fieldName,fieldValue)
     setFormData(prev=>({
@@ -41,24 +43,55 @@ function CreateNew() {
 
   const onCreateClickHandler=()=>{
     // GetVideoScript();
-    GenerateAudioFile(scriptData);
+    // GenerateAudioFile(scriptData);
+    // GenerateAudioCaption(FILE_URL);
+    GenerateImage();
   }
 
   const GenerateAudioFile=async(videoScriptData)=>{
     setLoading(true)
     let script='';
     const id=uuidv4();
-    // videoScriptData.forEach(item=>{
-      // script=script+item.contentText+' ';
-    // })
+    videoScriptData.forEach(item=>{
+      script=script+item.contentText+' ';
+    })
     await axios.post('/api/generate-audio',{
-      text:videoScriptData,
+      text:script,
       id:id 
     }).then(resp=>{
       setAudioFileUrl(resp.data.result);
+      resp.data.result&&GenerateAudioCaption(resp.data.result)
           })
       setLoading(false)
   }
+
+  const GenerateAudioCaption=async(fileUrl)=>{
+    setLoading(true);
+    await axios.post('/api/generate-caption',{
+      audioFileUrl:fileUrl
+    }).then(resp=>{
+      console.log(resp.data.result)
+      setCaptions(resp.data.result)
+      GenerateImage();
+    })
+    // setLoading(false)
+    console.log(videoScript,captions,audioFileUrl);
+    }
+  
+    const GenerateImage=()=>{
+      let images=[]
+      videoScript.forEach(async(element)=>{
+        await axios.post('api/genearte-image',{
+          prompt:element?.imagePrompt
+        }).then(resp=>{
+          console.log(resp.data.result);
+          images.push(resp.data.result)
+        })
+      })
+      console.log(images);
+      setImageList(images);
+      setLoading(false);
+    }
   return (
     <div className='md:px-20'>
       <h2 className='font-bold text-4xl text-primary text-center'></h2>

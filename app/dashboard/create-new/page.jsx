@@ -43,21 +43,20 @@ function CreateNew() {
     setLoading(true)
     const prompt='Write a script to generate '+formData.duration+' video on topic : '+formData.topic+' along with AI image prompt in '+formData.imageStyle+' format for each scene and give me result in JSON format with imagePrompt and ContentText as field, No Plain text'
     console.log(prompt)
-    const result= await axios.post('/api/get-video-script',{prompt:prompt}).
-    then(resp=>{
+    const resp= await axios.post('/api/get-video-script',{prompt:prompt});
+    if(resp.data.result.videoScenes){
       console.log(resp.data.result.videoScenes);
       setVideoScript(resp.data.result.videoScenes);
-      GenerateAudioFile(resp.data.result.videoScenes)
-    });
-    setLoading(false)
+      await GenerateAudioFile(resp.data.result.videoScenes)
+    }
   }
 
 
   const onCreateClickHandler=()=>{
-    // GetVideoScript();
+    GetVideoScript();
     // GenerateAudioFile(scriptData);
     // GenerateAudioCaption(FILE_URL);
-    GenerateImage();
+    // GenerateImage();
   }
 
   const GenerateAudioFile=async(videoScriptData)=>{
@@ -67,40 +66,42 @@ function CreateNew() {
     videoScriptData.forEach(item=>{
       script=script+item.contentText+' ';
     })
-    await axios.post('/api/generate-audio',{
+    const resp=await axios.post('/api/generate-audio',{
       text:script,
       id:id 
-    }).then(resp=>{
+    });
       setAudioFileUrl(resp.data.result);
-      resp.data.result&&GenerateAudioCaption(resp.data.result)
-          })
-      setLoading(false)
+      resp.data.result&&await GenerateAudioCaption(resp.data.result,videoScriptData)
+      
   }
 
-  const GenerateAudioCaption=async(fileUrl)=>{
+  const GenerateAudioCaption=async(fileUrl,videoScriptData)=>{
     setLoading(true);
-    await axios.post('/api/generate-caption',{
+    const resp=await axios.post('/api/generate-caption',{
       audioFileUrl:fileUrl
-    }).then(resp=>{
+    });
+    setCaptions(resp?.data?.result)
       console.log(resp.data.result)
-      setCaptions(resp?.data?.result)
-      GenerateImage();
-    })
-    // setLoading(false)
-    console.log(videoScript,captions,audioFileUrl);
+      resp.data.result&& await GenerateImage(videoScriptData);
+ 
     }
   
-    const GenerateImage=()=>{
+    const GenerateImage=async(videoScriptData)=>{
       let images=[]
-      VideoSCRIPT.forEach(async(element)=>{
-        await axios.post('/api/generate-image',{
-          prompt:element?.imagePrompt
-        }).then(resp=>{
+      for(const element of videoScriptData)
+      {
+        try{
+          const resp=await axios.post('/api/generate-image',{
+            prompt:element.imagePrompt
+          });
           console.log(resp.data.result);
-          images.push(resp.data.result)
-        })
-      })
-      console.log(images);
+          images.push(resp.data.result);
+
+        }catch(e)
+        {
+          console.log('Error:'+e);
+        }
+      }
       setImageList(images)
       setLoading(false);
     }

@@ -11,6 +11,18 @@ import {v4 as uuidv4} from 'uuid';
 
 const scriptData="In the dead of night, the hospital's corridors stretched into a realm of forgotten dread. A lone wheelchair stood abandoned, its silent wheels whispering forgotten tales. From the shadows, a pair of feet shuffled forward, their presence disturbing the silence A spectral figure materialized at the end of the hall, its form wavering and chilling. The corridor was silent once more, but the echoes of terror still lingered in the darkness."
 const FILE_URL="https://firebasestorage.googleapis.com/v0/b/visioncraft-b335b.firebasestorage.app/o/visioncraft%2F718ab756-210f-4f8d-ae80-6eb5359b7078.mp3?alt=media&token=686439ca-5788-42a2-ab0e-b3fec3ab2b3c"
+const VideoSCRIPT=[
+  {
+    "imagePrompt": "A bustling marketplace in ancient Rome, with people selling goods, merchants haggling, and citizens going about their daily lives. Realistic, detailed, and vibrant colors.",
+    "contentText": "Welcome to ancient Rome, a city buzzing with life and commerce. Imagine a bustling marketplace, filled with the cries of vendors and the chatter of citizens."
+  },
+  {
+    "imagePrompt": "A portrait of a Roman senator, stern and powerful, wearing a toga and sitting on marble throne. Realistic, with sharp details and a sense of authority.",
+    "contentText": "Among them, a powerful senator named Cato the Younger, known for his strong principles and unwavering patriotism."
+  }
+]
+
+
 
 function CreateNew() {
   const [formData,setFormData]=useState([]);
@@ -71,7 +83,7 @@ function CreateNew() {
       audioFileUrl:fileUrl
     }).then(resp=>{
       console.log(resp.data.result)
-      setCaptions(resp.data.result)
+      setCaptions(resp?.data?.result)
       GenerateImage();
     })
     // setLoading(false)
@@ -80,8 +92,8 @@ function CreateNew() {
   
     const GenerateImage=()=>{
       let images=[]
-      videoScript.forEach(async(element)=>{
-        await axios.post('api/genearte-image',{
+      VideoSCRIPT.forEach(async(element)=>{
+        await axios.post('/api/generate-image',{
           prompt:element?.imagePrompt
         }).then(resp=>{
           console.log(resp.data.result);
@@ -89,7 +101,7 @@ function CreateNew() {
         })
       })
       console.log(images);
-      setImageList(images);
+      setImageList(images)
       setLoading(false);
     }
   return (

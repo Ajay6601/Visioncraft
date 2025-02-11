@@ -20,8 +20,8 @@ function CreateNew() {
   const [audioFileUrl,setAudioFileUrl]=useState();
   const [imageList,setImageList]=useState();
   const [captions,setCaptions]=useState();
-  const [playVideo,setPlayVideo]=useState(false);
-  const [videoId,setVideoid]=useState();
+  const [playVideo,setPlayVideo]=useState(true);
+  const [videoId,setVideoid]=useState(2);
   const {videoData,setVideoData}=useContext(VideoDataContext);
   const {user}=useUser();
   

@@ -11,6 +11,7 @@ import { VideoDataContext } from '@/app/_context/VideoDataContext';
 import { useUser } from '@clerk/nextjs';
 import { db } from '@/configs/db';
 import { VideoData } from '@/configs/schema';
+import PlayerDialog from '../_components/PlayerDialog';
 
 function CreateNew() {
   const [formData,setFormData]=useState([]);
@@ -19,6 +20,8 @@ function CreateNew() {
   const [audioFileUrl,setAudioFileUrl]=useState();
   const [imageList,setImageList]=useState();
   const [captions,setCaptions]=useState();
+  const [playVideo,setPlayVideo]=useState(false);
+  const [videoId,setVideoid]=useState();
   const {videoData,setVideoData}=useContext(VideoDataContext);
   const {user}=useUser();
   
@@ -131,6 +134,8 @@ function CreateNew() {
         imageList:videoData?.imageList,
         createdBy:user?.primaryEmailAddress?.emailAddress
       }).returning({id:VideoData?.id})
+      setVideoid(result[0].id);
+      setPlayVideo(true);
       console.log(result);
       setLoading(false);
     }
@@ -152,6 +157,7 @@ function CreateNew() {
     <Button className="mt-10 w-full" onClick={onCreateClickHandler}>Create Short Video</Button>
     </div>
     <CustomLoading loading={loading}/>
+    <PlayerDialog playVideo={playVideo} videoId={videoId}/>
     </div>
 
   )

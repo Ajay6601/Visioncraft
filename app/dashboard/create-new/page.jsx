@@ -12,6 +12,7 @@ import { useUser } from '@clerk/nextjs';
 import { db } from '@/configs/db';
 import { VideoData } from '@/configs/schema';
 import PlayerDialog from '../_components/PlayerDialog';
+import { useRouter } from 'next/router';
 
 function CreateNew() {
   const [formData,setFormData]=useState([]);
@@ -24,7 +25,6 @@ function CreateNew() {
   const [videoId,setVideoid]=useState(2);
   const {videoData,setVideoData}=useContext(VideoDataContext);
   const {user}=useUser();
-  
   const onHandleInputChange=(fieldName,fieldValue)=>{
     console.log(fieldName,fieldValue)
     setFormData(prev=>({

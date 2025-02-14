@@ -5,8 +5,8 @@ function RemotionVideo({ script, imageList, audioFileUrl, captions, setDurationI
   const { fps } = useVideoConfig();
   const frame = useCurrentFrame();
 
-  // Compute total duration in frames
-  const durationInFrames = captions?.length > 0 ? (captions[captions.length - 1]?.end / 1000) * fps : 0;
+  // Ensure a valid duration in frames
+  const durationInFrames = captions?.length > 0 ? Math.round((captions[captions.length - 1]?.end / 1000) * fps) : 100;
 
   // Update duration only when captions change
   useEffect(() => {
@@ -16,7 +16,7 @@ function RemotionVideo({ script, imageList, audioFileUrl, captions, setDurationI
   }, [captions, durationInFrames, setDurationInFrame]);
 
   const getCurrentCaptions = () => {
-    const currentTime = (frame / 30) * 1000;
+    const currentTime = (frame / fps) * 1000;
     const currentCaption = captions?.find((word) => currentTime >= word.start && currentTime <= word.end);
     return currentCaption ? currentCaption.text : '';
   };
@@ -35,7 +35,7 @@ function RemotionVideo({ script, imageList, audioFileUrl, captions, setDurationI
         );
 
         return (
-          <Sequence key={index} from={startTime} durationInFrames={durationInFrames}>
+          <Sequence key={index} from={startTime} durationInFrames={duration}>
             <AbsoluteFill style={{ justifyContent: 'center', alignItems: 'center' }}>
               <Img
                 src={item}

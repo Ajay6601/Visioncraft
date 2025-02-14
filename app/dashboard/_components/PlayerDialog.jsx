@@ -23,7 +23,7 @@ function PlayerDialog({playVideo,videoId}) {
     const router=useRouter();
     
     useEffect(()=>{
-        setOpenDialog(playVideo)
+        setOpenDialog(!openDialog)
         videoId&&GetVideoData();
     },[playVideo])
 

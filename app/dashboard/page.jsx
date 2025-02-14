@@ -7,7 +7,7 @@ import { useUser } from "@clerk/nextjs";
 import { VideoData } from "@/configs/schema";
 import { eq } from "drizzle-orm";
 import { db } from "@/configs/db";
-
+import VideoList from "./_components/VideoList";
 function Dashboard() {
   const [videoList,setVideoList]=useState([]);
   const {user}=useUser();
@@ -39,6 +39,8 @@ function Dashboard() {
     {videoList?.length==0&& <div>
       <EmptyState/>
       </div>}
+
+      <VideoList videoList={videoList}/>
   </div>
 )
 }

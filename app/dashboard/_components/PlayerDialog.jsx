@@ -87,13 +87,17 @@ function PlayerDialog({ playVideo, videoId }) {
   const [durationInFrame, setDurationInFrame] = useState(100);
   const router = useRouter();
 
+  // useEffect(() => {
+  //     setOpenDialog(!openDialog);
+  //     videoId && GetVideoData();
+  
+  // }, [playVideo]);
+
   useEffect(() => {
-    if (playVideo) {
-      setOpenDialog(true);
-      if (videoId) GetVideoData();
-    } else {
-      setOpenDialog(false);
+    if (videoId) {
+      GetVideoData();
     }
+    setOpenDialog(playVideo);
   }, [playVideo, videoId]);
 
   const GetVideoData = async () => {
@@ -136,7 +140,7 @@ function PlayerDialog({ playVideo, videoId }) {
               <p className="text-center text-gray-500">Loading video data...</p>
             )}
             <div className="flex gap-10 mt-10">
-              <Button variant="ghost" onClick={() => router.replace("/dashboard")}>
+              <Button variant="ghost" onClick={() => {router.replace("/dashboard");setOpenDialog(false)}}>
                 Cancel
               </Button>
               <Button>Export</Button>

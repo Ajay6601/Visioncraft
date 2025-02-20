@@ -90,8 +90,8 @@ function RemotionVideo({ script, imageList = [], audioFileUrl, captions = [], se
 
   // Total duration based on captions, fallback to default if empty
   const totalDurationInFrames = hasCaptions
-    ? Math.round((captions[captions.length - 1]?.end / 1000) * fps)
-    : 100;
+  ? Math.round((captions[captions.length - 1]?.end / 1000) * fps)
+  : 100;
 
   // If imageList is empty, prevent division by zero
   const imageDuration = hasImages ? Math.floor(totalDurationInFrames / imageList.length) : totalDurationInFrames;

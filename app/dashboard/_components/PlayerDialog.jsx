@@ -137,7 +137,7 @@ function PlayerDialog({ playVideo, videoId }) {
                 }}
               />
             ) : (
-              <p className="text-center text-gray-500">Loading video data...</p>
+              <span className="text-center text-gray-500">Loading video data...</span>
             )}
             <div className="flex gap-10 mt-10">
               <Button variant="ghost" onClick={() => {router.replace("/dashboard");setOpenDialog(false)}}>

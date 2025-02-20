@@ -8,7 +8,7 @@ function VideoList({ videoList }) {
   const [videoId, setVideoId] = useState(null);
 
   return (
-    <div className='mt-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-10'>
+    <div className='mt-10 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-10'>
       {videoList?.map((video) => (
         <div key={video.id}>
           <div
@@ -20,8 +20,8 @@ function VideoList({ videoList }) {
           >
             <Thumbnail
               component={RemotionVideo}
-              compositionWidth={250}
-              compositionHeight={320}
+              compositionWidth={240}
+              compositionHeight={300}
               frameToDisplay={30}
               durationInFrames={120}
               fps={30}
